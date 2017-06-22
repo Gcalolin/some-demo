@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin:0;
+				padding:0;	
+			}
+			ul,li{
+				list-style:none;
+			}
+			div#container{
+				height:389px;
+				width:900px;
+				margin:100px auto 0;
+				padding:10px;
+			}
+			ul#images{
+				border-radius:15px;
+				position:relative;
+				width:100%;
+				height:100%;
+				overflow:hidden;
+				box-shadow:10px 10px 10px rgba(0, 0, 0, 0.5);
+			}
+			ul#images>li{
+				top:0;
+				position:absolute;
+				width:700px;
+				height:100%;
+				overflow:hidden;
+				background:cover;
+			}
+			ul#images>li>img{
+				height:100%;
+			}
+			ul#images>li:first-child{
+				left:0;
+			}
+			ul#images>li:last-child{
+				right:0;
+			}
+			div.light{
+				position:absolute;
+				height:300%;
+				width:30%;
+				top:-160%;
+				left:-20%;
+				background:-webkit-linear-gradient(left, transparent 0%, #fff 50%, #fff 50%, transparent 100%);
+				transform: rotate(60deg);
+			}
+			div.hoverDiv{
+				width:100%;
+				height:100%;
+				position:absolute;
+				left:0;
+				top:0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<ul id="images">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<script src="js/move.js"></script>
+		<script>
+			window.onload = function(){		
+				var container = document.getElementById('container')
+				var images = document.getElementById('images');
+				var list = images.getElementsByTagName('li');
+				for(var i = 0; i < list.length; i++){
+					//光线
+					var light = document.createElement('div');
+					light.className = 'light';
+					list[i].appendChild(light);
+					light.initTop = parseInt(getStyle(light, 'top'));
+					light.initLeft = parseInt(getStyle(light, 'left'));
+					
+					//光线的触发div
+					var hoverDiv = document.createElement('div');
+					hoverDiv.className = 'hoverDiv';
+					list[i].appendChild(hoverDiv);
+					hoverDiv.onmouseover = function(){
+						var myLight = this.previousSibling.nodeType == 1 ? this.previousSibling : this.previousSibling.previousSibling;
+						console.log(this);
+						move(myLight, {'top':parseInt(this.offsetHeight/2), 'left':parseInt(this.offsetWidth/2)}, null, 50);
+					}
+					hoverDiv.onmouseout = function(){
+						var myLight = this.previousSibling.nodeType == 1 ? this.previousSibling : this.previousSibling.previousSibling;
+						clearInterval(myLight.timer);
+						myLight.style.top = myLight.initTop + 'px';
+						myLight.style.left = myLight.initLeft + 'px';
+					}
+					
+					//每张图片
+					list[i].index = i;
+					var initAvgWidth = images.offsetWidth / list.length;
+					list[i].style.left = (i * initAvgWidth + 'px');
+					list[i].style.background = 'url(images/2/' + (i+1) + '.png';
+					list[i].onmouseover = function(){
+						var overWidth = images.offsetWidth - this.offsetWidth;
+						var avgWidth = overWidth / (list.length - 1);
+						images.showIndex = this.index;
+						var toLeft = this.offsetLeft > (images.offsetWidth/2) ? true : false;
+						if(toLeft){
+							for(var j = 0; j < list.length; j++){
+								if(j <= this.index){					
+									move(list[j], {'left':j*avgWidth});
+								}else{
+									move(list[j], {'left':this.offsetWidth+(j - 1)*avgWidth});
+								}
+							}
+						}else{
+							for(var k = 0; k < list.length; k++){
+								if(k <= this.index){
+									move(list[k], {'left':avgWidth*k});
+								}else{
+									move(list[k], {'left':this.offsetWidth+(k - 1)*avgWidth});
+								}
+								
+							}
+						}					
+					}
+				}
+				
+				//容器
+				container.onmouseout = function(){
+					var allLight = this.getElementsByClassName('light');
+					for(var i = 0; i < list.length; i++){
+						var initWidth = images.offsetWidth / list.length;
+						var lLeft = i * initWidth;
+						move(list[i], {'left':lLeft});
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
