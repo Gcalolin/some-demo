@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			a{
+				text-decoration:none;
+				color:inherit;
+			}
+			div#container{
+				width:1000px;
+				height:500px;
+				overflow:hidden;
+				margin:0 auto;
+				border:1px solid #DCDCDC;
+				position:relative;
+			}
+			div#container div.header{
+				height:40px;
+				background:#F2F2F2;
+				position:relative;
+				z-index:2;
+			}
+			div.header h3{
+				line-height:40px;
+				font-size:20px;
+			}
+			div.header span{
+				position:absolute;
+				line-height:40px;
+				right:20px;
+				top:0px;
+			}
+			ul#intro{
+				padding:10px 20px 10px;
+				position:relative;
+				z-index:1;
+			}
+			ul#intro>li{
+				list-style:none;
+				height:150px;
+			}
+			ul#intro>li::after{
+				display:block;
+				width:100%;
+				content:"";
+				height:10px;
+				clear:both;
+			}
+			ul#intro>li img{
+				float:left;
+			}
+			ul#intro>li div{
+				float:left;
+				max-width:750px;
+				min-height:130px;
+				margin-left:25px;
+				background:#F2F3F0;
+				padding:10px 40px 0px;
+				position:relative;
+			}
+			ul#intro>li div:before{
+				display:block;
+				position:absolute;
+				height:0px;
+				width:0px;
+				border:8px solid #F2F3F0;
+				border-top-color:transparent;
+				border-left-color:transparent;
+				left:-16px;
+				top:40px;
+				content:"";
+			}
+			ul#intro>li>div>p:nth-of-type(1){
+				color:#333;
+				font-size:14px;
+			}
+			ul#intro>li>div>p:nth-of-type(2){
+				color:#808080;
+				margin-top:15px;
+				line-height:25px;
+				font-size:12px;
+			}
+			ul#intro>li:not(.more){
+				opacity:0;
+			}
+		</style>
+		<script src="./js/move.js"></script>
+	</head>
+	<body>
+		<div id="container">
+			<div class="header">
+				<h3>合作企业</h3>
+				<span><a href="#">更多</a></span>
+			</div>
+			<ul id="intro">
+				<li>
+					<img src="images/4/4.png" alt="" />
+					<div>
+						<p>哥伦比亚传媒集团招聘经理 李海海</p>
+						<p>CBSi是全球最大的专业互动内容网络。CBSi China的众多媒体和LAMP兄弟都有非常紧密的合作，“兄弟连”严谨的治学风格，严格的教育体系，在培训中从实际工作角度出发，不单单培养出一批批技术基础扎实的学员，同时还能从工作、学习态度、责任心等方面对学员们进行非常正向的指导。到目前为止，在职的学员均受到了部门主管领导的肯定和好评。谢谢LAMP兄弟连的老师、辅导员能够为我们提供了一个资源丰富的人才储备平台，同时也希望我们的合作可以越来越好。</p>
+					</div>
+				</li>
+				<li>
+					<img src="images/4/5.png" alt="" />
+					<div>
+						<p>哥伦比亚传媒集团招聘经理 李海海</p>
+						<p>CBSi是全球最大的专业互动内容网络。CBSi China的众多媒体和LAMP兄弟都有非常紧密的合作，“兄弟连”严谨的治学风格，严格的教育体系，在培训中从实际工作角度出发，不单单培养出一批批技术基础扎实的学员，同时还能从工作、学习态度、责任心等方面对学员们进行非常正向的指导。到目前为止，在职的学员均受到了部门主管领导的肯定和好评。谢谢LAMP兄弟连的老师、辅导员能够为我们提供了一个资源丰富的人才储备平台，同时也希望我们的合作可以越来越好。</p>
+					</div>
+				</li>
+				<li>
+					<img src="images/4/6.png" alt="" />
+					<div>
+						<p>哥伦比亚传媒集团招聘经理 李海海</p>
+						<p>CBSi是全球最大的专业互动内容网络。CBSi China的众多媒体和LAMP兄弟都有非常紧密的合作，“兄弟连”严谨的治学风格，严格的教育体系，在培训中从实际工作角度出发，不单单培养出一批批技术基础扎实的学员，同时还能从工作、学习态度、责任心等方面对学员们进行非常正向的指导。到目前为止，在职的学员均受到了部门主管领导的肯定和好评。谢谢LAMP兄弟连的老师、辅导员能够为我们提供了一个资源丰富的人才储备平台，同时也希望我们的合作可以越来越好。</p>
+					</div>
+				</li>
+				<li>
+					<img src="images/4/1.png" alt="" />
+					<div>
+						<p>哥伦比亚传媒集团招聘经理 李海海</p>
+						<p>CBSi是全球最大的专业互动内容网络。CBSi China的众多媒体和LAMP兄弟都有非常紧密的合作，“兄弟连”严谨的治学风格，严格的教育体系，在培训中从实际工作角度出发，不单单培养出一批批技术基础扎实的学员，同时还能从工作、学习态度、责任心等方面对学员们进行非常正向的指导。到目前为止，在职的学员均受到了部门主管领导的肯定和好评。谢谢LAMP兄弟连的老师、辅导员能够为我们提供了一个资源丰富的人才储备平台，同时也希望我们的合作可以越来越好。</p>
+					</div>
+				</li>
+				<li>
+					<img src="images/4/2.png" alt="" />
+					<div>
+						<p>哥伦比亚传媒集团招聘经理 李海海</p>
+						<p>CBSi是全球最大的专业互动内容网络。CBSi China的众多媒体和LAMP兄弟都有非常紧密的合作，“兄弟连”严谨的治学风格，严格的教育体系，在培训中从实际工作角度出发，不单单培养出一批批技术基础扎实的学员，同时还能从工作、学习态度、责任心等方面对学员们进行非常正向的指导。到目前为止，在职的学员均受到了部门主管领导的肯定和好评。谢谢LAMP兄弟连的老师、辅导员能够为我们提供了一个资源丰富的人才储备平台，同时也希望我们的合作可以越来越好。</p>
+					</div>
+				</li>
+				<li>
+					<img src="images/4/3.jpg" alt="" />
+					<div>
+						<p>哥伦比亚传媒集团招聘经理 李海海</p>
+						<p>奇矩互动是一家专业的游戏公司，公司经过5年的专业积淀，是一家拥有着丰富社交游戏、手机游戏、网页游戏研发和运营经验的领先的复合型游戏厂商。公司有很好的技术沉淀和技术氛围，非常赞同兄弟连在教学期间所传递的很多技术成长理念，现在兄弟连已经成为我们PHP研发最主要的入口。也欢迎更多兄弟连优秀的学员加入奇矩互动。</p>
+					</div>
+				</li>
+				<li class="more">
+					<img src="images/4/4.png" alt="" />
+					<div>
+						<p>哥伦比亚传媒集团招聘经理 李海海</p>
+						<p>CBSi是全球最大的专业互动内容网络。CBSi China的众多媒体和LAMP兄弟都有非常紧密的合作，“兄弟连”严谨的治学风格，严格的教育体系，在培训中从实际工作角度出发，不单单培养出一批批技术基础扎实的学员，同时还能从工作、学习态度、责任心等方面对学员们进行非常正向的指导。到目前为止，在职的学员均受到了部门主管领导的肯定和好评。谢谢LAMP兄弟连的老师、辅导员能够为我们提供了一个资源丰富的人才储备平台，同时也希望我们的合作可以越来越好。</p>
+					</div>
+				</li>
+				<li class="more">
+					<img src="images/4/5.png" alt="" />
+					<div>
+						<p>哥伦比亚传媒集团招聘经理 李海海</p>
+						<p>CBSi是全球最大的专业互动内容网络。CBSi China的众多媒体和LAMP兄弟都有非常紧密的合作，“兄弟连”严谨的治学风格，严格的教育体系，在培训中从实际工作角度出发，不单单培养出一批批技术基础扎实的学员，同时还能从工作、学习态度、责任心等方面对学员们进行非常正向的指导。到目前为止，在职的学员均受到了部门主管领导的肯定和好评。谢谢LAMP兄弟连的老师、辅导员能够为我们提供了一个资源丰富的人才储备平台，同时也希望我们的合作可以越来越好。</p>
+					</div>
+				</li>
+				<li class="more">
+					<img src="images/4/6.png" alt="" />
+					<div>
+						<p>哥伦比亚传媒集团招聘经理 李海海</p>
+						<p>CBSi是全球最大的专业互动内容网络。CBSi China的众多媒体和LAMP兄弟都有非常紧密的合作，“兄弟连”严谨的治学风格，严格的教育体系，在培训中从实际工作角度出发，不单单培养出一批批技术基础扎实的学员，同时还能从工作、学习态度、责任心等方面对学员们进行非常正向的指导。到目前为止，在职的学员均受到了部门主管领导的肯定和好评。谢谢LAMP兄弟连的老师、辅导员能够为我们提供了一个资源丰富的人才储备平台，同时也希望我们的合作可以越来越好。</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var intro = document.getElementById("intro");
+		var items = document.getElementById("intro").getElementsByTagName('li');
+		var index = items.length - 4;
+		intro.style.top = -(items.length - 3) * 150 + 'px';
+		setInterval(function(){
+			var top = parseInt(getStyle(intro, 'top'));
+			if(top >=0 ){
+				index = items.length - 4;
+				intro.style.top = -(items.length - 3) * 150 + 'px';
+				top = -(items.length - 3) * 150 + 'px';
+				for(var i = 0; i <= index; i++){
+					items[i].style.opacity = 0;
+				}
+			}
+			move(intro, {top:top+150},function(){
+				setTimeout(function(){
+					move(items[index], {opacity:100});
+					index--;
+				},200);
+			});
+			
+		}, 5000);
+	</script>
+</html>

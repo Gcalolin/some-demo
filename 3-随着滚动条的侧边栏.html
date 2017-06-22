@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			body{
+				overflow-x:hidden;
+			}
+			div#aside{
+				position:absolute;
+				right:-175px;
+				top:50%;
+				transform:translateY(-50%);
+				width:200px;
+				height:350px;
+				border:1px solid black;
+				background:white;
+			}
+			span#pull{
+				display:block;
+				position:absolute;
+				left:-20px;
+				height:50px;
+				width:50px;
+				top:-20px;
+				background:url(images/3/button.png);
+				transform:matrix(1, 0, 0, 1, 0, 0);
+			}
+			span.hover{
+				cursor:pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="aside">
+			<div id="content"></div>
+			<span id="pull"></span>
+		</div>
+		<script src="./js/move.js"></script>
+		<script>
+			for(var i = 0; i < 10; i++){
+				var oDiv = document.createElement('div');
+				oDiv.style.height = 500 + 'px';
+				var random1 = Math.floor(Math.random() * 256);
+				var random2 = Math.floor(Math.random() * 256);
+				var random3 = Math.floor(Math.random() * 256);
+				oDiv.style.background = 'rgb( ' + random1 + ', ' + random2 + ', ' + random3 + ')';
+				document.body.appendChild(oDiv);
+			}
+			
+			var aside = document.getElementById('aside');
+			aside.initRight = parseInt(getStyle(aside, 'right'));
+			var pull = document.getElementById('pull');
+			pull.toOut = true;
+			
+			pull.onmouseover = function(){
+				this.className = 'hover';
+			}
+			pull.onmouseout = function(){
+				this.className = '';
+			}
+			pull.onclick = function(){
+				var objThis = this;
+				if(this.toOut){
+					move(aside, {'right':-10});
+					this.toOut = false;
+					this.rotateFun = setInterval(function(){
+						var deg = getDegInMatrix(objThis) + 5;
+						if(deg >= 180){
+							clearInterval(objThis.rotateFun);
+						}
+						setMatrix(objThis, deg);
+					}, 20);
+				}else{
+					move(aside, {'right':aside.initRight});
+					this.toOut = true;
+					this.rotateFun = setInterval(function(){
+						var deg = getDegInMatrix(objThis) - 5;
+						if(deg <= 0){
+							deg = 0;
+							clearInterval(objThis.rotateFun);
+						}
+							setMatrix(objThis, deg);
+					}, 20);
+				}
+				
+				
+			}
+			
+			window.onscroll = function(){
+				var wHeight = window.innerHeight;
+//				console.log(wHeight)
+				var aHeight = aside.offsetHeight;
+//				console.log(aHeight);
+				var allTop = document.body.scrollTop || document.documentElement.scrollTop;
+				console.log(allTop)
+				move(aside, {'top':parseInt(allTop + wHeight / 2)});
+			}
+			
+			
+			
+		</script>
+	</body>
+</html>

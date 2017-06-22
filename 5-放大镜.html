@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			ul{
+				list-style:none;
+			}
+			div#container{
+				float:left;
+				margin:20px 0 0 20px;
+				padding:10px;
+				width:400px;
+			}
+			div#showImage{
+				position:relative;
+				width:400px;
+				height:400px;
+				background-size:contain;
+			}
+			/*div#showImage>img{
+				display:block;
+				width:400px;
+				height:400px;
+			}*/
+			div#showImage>div#hover{
+				position:absolute;
+				top:0;
+				left:0;
+				width:200px;
+				height:200px;
+				background:#999;
+				opacity:0.5;
+				display:none;
+			}
+			div#showImage>div#shade{
+				width:100%;
+				height:100%;
+				position:absolute;
+				top:0;
+				left:0;
+			}
+			div#images{
+				margin-top:20px;
+			}
+			div#images>ul{
+				width:100%;
+				display:table;
+			}
+			div#images>ul>li{
+				float:left;
+				width:22%;
+			}
+			div#images>ul>li:not(:last-child){
+				margin-right:4%;
+			}
+			div#images>ul>li.active{
+				outline:2px solid skyblue;	
+				cursor:pointer;		
+			}
+			div#images>ul>li>img{
+				width:100%;
+				height:100%;
+				display:block;
+			}
+			div#bigImage{
+				width:400px;
+				height:400px;
+				box-shadow:0px 10px 30px 5px rgba(0, 0, 0, 0.3),0px -10px 30px 5px rgba(0, 0, 0, 0.3),10px 0px 30px 5px rgba(0, 0, 0, 0.3),-10px 0px 30px 5px rgba(0, 0, 0, 0.3);
+				position:absolute;
+				display:none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div id="showImage">
+				<div id="hover">
+				</div>
+				<div id="shade"></div>
+				<div id="bigImage"></div>
+			</div>
+			<div id="images">
+				<ul>
+					<li><img src="images/5/1.jpg" alt="" /></li>
+					<li><img src="images/5/2.jpg" alt="" /></li>
+					<li><img src="images/5/3.jpg" alt="" /></li>
+					<li><img src="images/5/4.jpg" alt="" /></li>
+				</ul>
+			</div>
+		</div>	
+		<script src="js/move.js"></script>
+		<script>
+			var hover = document.getElementById('hover');
+			var shade = document.getElementById('shade');
+			var showImage = document.getElementById('showImage');
+			var bigImage = document.getElementById('bigImage');
+			var list = document.getElementById('images').getElementsByTagName('li');
+			
+			console.log(list[0].getElementsByTagName('img')[0].src)
+			showImage.style.backgroundImage = 'url(' + list[0].getElementsByTagName('img')[0].src + ')';
+			bigImage.style.backgroundImage = 'url(' + list[0].getElementsByTagName('img')[0].src + ')';
+			
+			shade.onmouseover = function(e){
+				var ev = e || window.event;
+				hover.style.display = 'block';
+				this.style.cursor = 'move';
+				setHoverPosition(ev.offsetX, ev.offsetY);
+			}
+			
+			shade.onmousemove = function(e){
+				var ev = e || window.event;
+				setHoverPosition(ev.offsetX, ev.offsetY);
+				bigImage.style.backgroundPositionX = -2 * hover.offsetLeft + 'px';
+				bigImage.style.backgroundPositionY = -2 * hover.offsetTop + 'px';
+				setBigBgPosition(hover.offsetLeft, hover.offsetTop);
+				bigImage.style.display = 'block';
+				bigImage.style.top = 0;
+				bigImage.style.left = showImage.offsetWidth + 20 + 'px';
+			}
+			
+			shade.onmouseout = function(){				
+				hover.style.display = 'none';
+				bigImage.style.display = 'none';
+			}
+			
+			function setHoverPosition(pointX, pointY){
+				var hWidth = hover.offsetWidth;
+				var hHeight = hover.offsetHeight;
+				var hTop = pointY - hHeight / 2;
+				var hLeft = pointX - hWidth / 2;
+				if(hTop < 0){
+					hTop = 0;
+				}
+				if(hTop > shade.offsetHeight - hHeight){
+					hTop = shade.offsetHeight - hWidth
+				}
+				if(hLeft < 0){
+					hLeft = 0;
+				}
+				if(hLeft > shade.offsetWidth - hWidth){
+					hLeft = shade.offsetWidth - hWidth
+				}
+				hover.style.top = hTop + 'px';
+				hover.style.left = hLeft + 'px';
+			}
+			
+			function setBigBgPosition(hTop, hLeft){
+				console.log(hTop, hLeft);
+			}
+			
+			for(var i = 0; i < list.length; i++){
+				list[i].index = i;
+				list[i].onmouseover = function(){
+					var src = this.getElementsByTagName('img')[0].src;
+					console.log(src);
+					for(var j = 0; j < list.length; j++){
+						if(this.index == j){
+							list[j].setAttribute('class', 'active');
+						}else{
+							list[j].removeAttribute('class');
+						}
+					}
+					showImage.style.backgroundImage = 'url(' + src + ')';
+					bigImage.style.backgroundImage = 'url(' + src + ')';
+				};
+				
+				
+			}
+			
+		</script>
+	</body>
+</html>

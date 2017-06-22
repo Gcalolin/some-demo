@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			ul{
+				list-style:none;
+			}
+			div#container{
+				position: fixed;
+				top: 50%;
+				right: 5px;			
+			}
+			div#container div#td{
+				width:50px;
+				height:50px;
+				position:absolute;
+				top:-107px;
+				right:-5px;
+				background:url(images/7/td.png);
+				background-size:contain;
+				z-index:3;
+			}
+			div#slide {
+				position:relative;
+				background:red;
+				box-shadow:10px 10px 20px; black;
+				border-radius:20px 10px;
+				width: 100px;
+				height: 150px;
+				overflow:hidden;
+				transform-origin: top right;
+				transform:translateY(-50%) rotateZ(-30deg);
+			}
+			
+			div#slide div#hover{
+				/*position:absolute;
+				top:0;
+				left:0;*/
+				height: 100%;
+				width: 100%;
+			}
+			div#slide div#hover:hover{
+				cursor:pointer;
+			}
+			
+			div#slide div#hover img {
+				width: 100%;
+				height: 100%;
+			}
+			div#slide div#back{
+				width:30px;
+				height:30px;
+				position:absolute;
+				bottom:0px;
+				left:-5px;
+				background:url(images/7/back.png);
+				background-size:contain;
+				display:none;
+			}
+			div#slide div#back:hover{
+				cursor:pointer;
+			}
+			
+			div#content{
+				border:2px solid red;
+				background:white;
+			}
+			div#content h2{
+				padding:5px;
+				background:red;
+				color:white;
+			}
+			div#content>ul {
+				margin-top: 10px;
+			}
+			
+			div#content>ul>li {
+				padding-left: 20px;
+				line-height: 40px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="container">
+		<div id="td">
+		</div>	
+		<div id="slide">
+			<div id="hover">
+				<img src="images/7/hb.png" alt="" />
+			</div>
+			<div id="back">
+			</div>
+			
+			<div id="content">
+				<h2>兄弟连过年大放血</h2>
+				<ul>
+					<li><span>UI课程：100￥</span><button>点击报名</button></li>
+					<li><span>H5课程：100￥</span><button>点击报名</button></li>
+					<li><span>PHP课程：100￥</span><button>点击报名</button></li>
+					<li><span>ISO课程：100￥</span><button>点击报名</button></li>
+					<li><span>JAVA课程：100￥</span><button>点击报名</button></li>
+					<li><span>全栈课程：100￥</span><button>点击报名</button></li>
+				</ul>
+			</div>
+		</div>
+		</div>
+		<script src="js/move.js"></script>
+		<script>
+			var slide = document.getElementById('slide');
+			var hover = document.getElementById('hover');
+			var content = document.getElementById('content');
+			var back = document.getElementById('back');
+			
+			slide.moveTo = 'left';
+			slide.onmouseover = overMove;
+			
+			//侧边栏移动
+			function overMove(){
+				var obj = this;
+				this.moveRev = setInterval(function(){
+//					var cos = getArgInMatrix(obj, 0);
+					//通过反余弦求出角度
+					var deg = getDegInMatrix(obj);
+					console.log(deg);
+					if(deg > 45){
+						obj.moveTo = 'left';
+					}
+					if(deg < 15){
+						obj.moveTo = 'right';
+					}
+					console.log(obj.moveTo);
+					if(obj.moveTo == 'left'){
+						deg-=2;
+					}
+					if(obj.moveTo == 'right'){
+						deg+=2;
+					}
+					setMatrix(obj, deg);
+				}, 20);
+			}
+			
+			
+			slide.onmouseout = function() {
+				clearInterval(this.moveRev);
+			}
+			
+			hover.onclick = function(){	
+				var parent = this.parentNode;
+				clearInterval(parent.moveRev);
+				//让它转到垂直状态
+				parent.moveToVertical = setInterval(function(){
+					var cos = getArgInMatrix(parent, 0);
+					//通过反余弦求出角度
+					var deg = getDegByCos(cos);
+					if(deg <= 0){
+						clearInterval(parent.moveToVertical);
+						//放大
+						parent.onmouseover = null;
+						move(parent, {'height':300, 'width':220},function(){
+							var firstElement = getFirstElement(parent);
+							move(firstElement, {'opacity':0},function(){
+								back.style.display = 'block';
+								parent.hover = firstElement;
+								parent.removeChild(firstElement);
+							})
+						});
+					}else{
+						deg-=2;
+					}
+					setMatrix(parent, deg);
+				}, 20);		
+			}
+			
+			back.onclick = function(){
+				this.style.display = 'none';
+				var newHover = slide.hover;
+				slide.replaceChild(newHover, slide.firstChild);
+				move(newHover, {'opacity':100}, function(){
+					move(slide, {'width':100, 'height':150},function(){				
+						var moveBack = setInterval(function(){
+							var cos = getArgInMatrix(slide, 0);
+							//通过反余弦求出角度
+							var deg = getDegByCos(cos);
+							if(deg < 30){
+								deg++;
+							}else{
+								clearInterval(moveBack);
+								slide.onmouseover = overMove;
+							}
+							setMatrix(slide, deg);
+						}, 20);			
+					});
+				});
+			}
+
+			//获得第一个元素节点
+			function getFirstElement(obj){
+				console.log(obj);
+				if(obj.firstChild.nodeType == 1){
+					return obj.firstChild;
+				}else if(obj.firstChild.nodeType == 3){
+					return obj.firstChild.nextSibling;
+				}
+			}
+		</script>
+	</body>
+
+</html>

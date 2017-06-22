@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			ul,li{
+				list-style:none;
+			}
+			a{
+				text-decoration:none;
+			}
+			div.container{
+				/*width:auto;*/
+				margin:0 auto;
+				display: table;
+			}
+			div.container ul.images{
+				position:relative;
+				height:540px;
+				width:960px;
+			}
+			div.container ul.images li{
+				height:540px;
+				width:960px;
+				float:left;
+				position:absolute;
+				top:0;
+				left:0;
+				background-size:cover;
+				display:none;
+			}
+			div.container ul.images li img{
+				width:100%;	
+			}
+			ul.images div.change{
+				display: block;
+				width:50px;
+				height:100%;
+				text-align:center;
+				color:rgba(255, 255, 255, 0.1);
+				background:rgba(0, 0, 0, 0.1);
+				position:absolute;
+				top:0;
+				display: none;
+				z-index: 10;
+			}
+			ul.images div.change.toLeft{
+				left:0;
+			}
+			ul.images div.change.toRight{
+				right:0;
+			}
+			ul.images div.change.hover{
+				cursor:pointer;
+				background:rgba(0, 0, 0, 0.5);
+				color:rgba(255, 255, 255, 0.7);
+			}
+			ul.images div.change a{
+				font-size:50px;
+				color:inherit;
+				opacity: inherit;
+				position: absolute;
+				top:50%;
+				transform:translateY(-50%);
+			}
+			ul.images div.change a:first-child{
+				left:0;
+			}
+			ul.images div.change a:last-child{
+				right:0;
+			}
+			ul.images div.btns{
+				position: absolute;
+				left:50%;
+				transform: translateX(-50%);
+				bottom: 20px;
+				z-index: 10;
+			}
+			ul.images div.btns span{
+				display: block;
+				float:left;
+				margin-right:5px;
+				background:rgba(0, 0, 0, 0.2);
+				height:14px;
+				width:14px;
+				border-radius: 50%;
+				border:2px solid #ccc;
+			}
+			ul.images div.btns span.hover{
+				background:rgba(252, 198, 121, 0.7);
+				cursor:pointer;
+			}
+			ul.images div.btns span.active{
+				background:rgba(252, 198, 121, 0.7);
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<ul class="images" id="zjl">
+				<li data-img="images/10/1.jpg"></li>
+				<li data-img="images/10/2.jpg"></li>
+				<li data-img="images/10/3.jpg"></li>
+				<li data-img="images/10/4.jpg"></li>
+				<li data-img="images/10/5.jpg"></li>
+				<li data-img="images/10/6.jpg"></li>
+				<div class="change toLeft">
+					<a href="#">&lt;</a>
+				</div>
+				<div class="change toRight">
+					<a href="#">&gt;</a>				
+				</div>
+				<div class="btns">
+					<!--<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>-->
+				</div>
+			</ul>
+		</div>
+		<script src="js/move.js"></script>
+		<script>
+			var zjl = document.getElementById("zjl");//轮播图ul
+			var bigImg = zjl.getElementsByTagName('li');//轮播图下的所有li
+			var horCount = 10;//水平方向小图片个数
+			var verCount = 5;//垂直方向小图片个数
+			//小图片平均宽度
+			var iWidth = zjl.offsetWidth / horCount;
+			//小图片平均高度
+			var iHeight = zjl.offsetHeight / verCount;
+//			console.log(bigImg);
+			
+			//切换左右图片的按钮
+			var changeBtn = zjl.getElementsByClassName('change');
+			var btnToLeft = changeBtn[0];
+			var btnToRight = changeBtn[1];
+			
+			//存放小按钮的容器
+			var btnsCon = zjl.getElementsByClassName('btns')[0];
+			
+			init();
+			//打造初始页面
+			function init(){
+				//获取每个li下data-img(存放图片地址)的值
+				for(var i =0; i < bigImg.length; i++){
+					bigImg[i].index = i;
+					var imgUrl = bigImg[i].getAttribute('data-img');
+					//将图片放到每一个小div上
+					setSmallImg(bigImg[i], imgUrl);
+				}
+				//指定当前ul显示的li
+				bigImg[0].style.display = 'block';
+				bigImg[0].style.zIndex = '2';
+				//指定当前ul显示的li的下标
+				zjl.currentIndex = 0;
+				
+				//根据图片数量创建对应数量的小按钮添加到指定容器
+				for(var i = 0; i < bigImg.length; i++){
+					var btnSpan = document.createElement('span');
+					btnSpan.index = i;
+					btnSpan.onmouseover = function(){
+						//避免hover和active样式重合
+						if(this.className.indexOf('active') == -1){
+							addStyle(this, 'hover');							
+						}else{
+							return false;
+						}
+					}
+					btnSpan.onmouseout = function(){
+						//防止已被点击的按钮在mouseout时样式被带走
+						if(this.className.indexOf('active') == -1){
+							removeStyle(this, 'hover');
+						}
+					}
+					
+					btnSpan.onclick = function(){
+						if(zjl.currentIndex == this.index){
+							return false;
+						}
+						//调用函数，将当前li跳转到某个对应下标的li
+						moveToWhere(this.index);
+					}
+					//添加到容器中
+					btnsCon.appendChild(btnSpan);
+				}
+				
+				//当前显示的是第一个按钮
+				whichBtnClick(0);
+				
+				//轮播图自己移动
+				zjl.timer = setInterval(function(){
+					//相当于没4秒触发一次向右移动轮播图按钮的点击事件
+					console.log(zjl.currentIndex);
+					btnToRight.onclick();
+				}, 4000);
+				
+				//初始化结束
+			}
+			
+			
+			
+			//鼠标移入移出容器
+			zjl.onmouseover = function(){
+				btnToLeft.style.display = 'block';
+				btnToRight.style.display = 'block';
+				btnsCon.style.display = 'block';
+				clearInterval(this.timer);
+			}
+			zjl.onmouseout = function(){
+				btnToLeft.style.display = 'none';
+				btnToRight.style.display = 'none';
+				zjl.timer = setInterval(function(){
+					btnToRight.onclick();
+				}, 3000);
+			}
+			
+			//左右按键移入移出事件
+			btnToLeft.onmouseover = function(){
+				addStyle(this, 'hover');
+			}
+			btnToRight.onmouseover = function(){
+				addStyle(this, 'hover');
+			}
+			btnToLeft.onmouseout = function(){
+				removeStyle(this, 'hover');
+			}
+			btnToRight.onmouseout = function(){
+				removeStyle(this, 'hover');
+			}
+			
+			//左右按键点击事件
+			//将当前下标+1或者-1后的值传递给移动图片的函数
+			btnToLeft.onclick = function(){
+				// console.log(zjl.currentIndex);
+				moveToWhere(zjl.currentIndex -1);
+			}
+			btnToRight.onclick = function(){
+				moveToWhere(zjl.currentIndex + 1);
+			}
+			
+			//移动到指定位置的下标
+			function moveToWhere(num){
+				//如果轮播图正在运动，返回
+				if(zjl.moving){
+					return false;
+				}
+				zjl.moving = true;
+				//如果传入的参数小于0，当前要选中的下标值等于最后面的li的下标
+				if(num < 0){
+					zjl.chooseIndex = bigImg.length - 1;
+				}else if(num >= bigImg.length){
+					//如果传入的参数大于或者等于li的长度，当前要选中的下标值等于0
+					zjl.chooseIndex = 0;
+				}else{
+					zjl.chooseIndex = num;
+				}
+				//设定某个按钮被点击的样式
+				whichBtnClick(zjl.chooseIndex);
+				//将被选中的li的层级提升为1(变换的li的zIndex为2，其他为0)
+				bigImg[zjl.chooseIndex].style.display = 'block';
+				bigImg[zjl.chooseIndex].style.zIndex = '1';
+				//获取当前也就是要变换的li下的所有小div
+				var imgs = bigImg[zjl.currentIndex].getElementsByTagName('div');
+				//对所有的小div进行运动
+				moveSmallImg(imgs, imgs.length);
+			}
+
+			//哪个按钮被选中
+			function whichBtnClick(index){
+				var btnSpans = btnsCon.getElementsByTagName('span');
+				console.log(btnSpans)
+				for(var i = 0; i < btnSpans.length; i++){
+					if(btnSpans[index].index == btnSpans[i].index){
+						removeStyle(btnSpans[i], 'hover');
+						addStyle(btnSpans[i], 'active');
+					}else{
+						removeStyle(btnSpans[i], 'active');
+					}
+				}
+			}
+			
+			
+			//设置小div初始样式
+			function setSmallImg(obj, imgUrl){	
+				for(var i = 0; i < horCount; i++){
+					for(var j = 0; j < 	verCount; j++){
+						var insetDiv = document.createElement('div');
+						insetDiv.style.height = iHeight + 'px';
+						insetDiv.style.width = iWidth + 'px';
+						insetDiv.style.position = 'absolute';
+						insetDiv.style.left = i * iWidth + 'px';
+						insetDiv.style.top = j * iHeight + 'px';
+						//记住自己的初始位置
+						insetDiv.initLeft = i * iWidth;
+						insetDiv.initTop = j * iHeight;
+						insetDiv.style.backgroundImage = 'url(' + imgUrl + ')';
+						insetDiv.style.backgroundPositionX = -(i * iWidth) + 'px';
+						insetDiv.style.backgroundPositionY = -(j * iHeight) + 'px';
+						obj.appendChild(insetDiv);
+					}
+				}
+			}
+			
+			//移动所有小图片
+			//参数:存放所有小div的数组，数组长度，定时器加递归调用
+			function moveSmallImg(imgs, length){
+				//两种情况
+				//1、选择的下标大于当前显示的下标，让小div向右移(正方向)
+				//2、选择的下标小于当前显示的下标，让小div向左移(负方向)
+				if(zjl.chooseIndex > zjl.currentIndex){
+					moveLeft = 200;
+				}else{
+					moveLeft = -200;
+				}
+				
+				//这是一个递归结束条件
+				if(length == 0){
+					//所有都执行完了之后
+					return;
+				}else{
+					//当选择的下标大于当前显示的下标，小div从左侧向右依次开始运动(看起来就是从左边推到右边)
+					//反之亦然
+					var index = zjl.chooseIndex > zjl.currentIndex ? imgs.length - length : length - 1;
+//					console.log(index);
+					
+					move(imgs[index], {'top':imgs[index].offsetTop-100,'left':imgs[index].offsetLeft+moveLeft,'opacity':0},function(){
+						//
+//						imgs[index].style.display = 'none';
+						//判断是否最后一个执行完
+						if((zjl.chooseIndex > zjl.currentIndex && index == imgs.length - 1) || (zjl.chooseIndex < zjl.currentIndex && index == 0)){
+							//如果最后一个执行完毕，将小div改变的样式还回来
+							backToInit(bigImg[zjl.currentIndex]);
+						}
+					}, 50);
+					//如果上面没满足‘length==0’，必然会到这里执行递归
+					setTimeout(function(){
+						moveSmallImg(imgs, length - 1);
+					}, 20);
+				}
+			}
+			
+			//让移动后的小图片返回初始样式
+			//参数：指定的li
+			function backToInit(obj){
+				//改变完成之后应该让他放在下面
+				obj.style.zIndex = '0';
+				var smallDivs = obj.getElementsByTagName('div');
+				for(var i = 0; i < smallDivs.length; i++){
+					smallDivs[i].style.left = smallDivs[i].initLeft + 'px';
+					smallDivs[i].style.top = smallDivs[i].initTop + 'px';
+//					smallDivs[i].style.display = 'block';
+					smallDivs[i].style.opacity = 1;
+				}
+				//改变存放当前显示的li的下标的值
+				zjl.currentIndex = zjl.chooseIndex;
+				zjl.chooseIndex = null;
+				//显示的话将其置于上层
+				bigImg[zjl.currentIndex].style.zIndex = '2';
+				//将运动的标志标识为没运动
+				zjl.moving = false;
+			}
+			
+				
+			
+			
+			//添加样式
+			function addStyle(obj, className){
+				var clName = obj.getAttribute('class');
+				if(clName == null || clName == ''){
+					obj.className = className;
+				}else if(clName.indexOf(className) == -1){
+					clName += ' ' +  className;
+					obj.className = clName;
+				}
+			}
+			
+			//移除选中的样式
+			function removeStyle(obj, className){
+				var clName = obj.getAttribute('class');
+				if(clName == '' || clName == null){
+					return;
+				}
+				if(clName.indexOf(className) != -1){
+					//存在了在进行比较
+					var classArr = clName.split(' ');
+					//避免不全等值的类出现
+					for(var i = 0; i < classArr.length; i++){
+						if(classArr[i] == className){
+							//避免出现多余空格
+							classArr = classArr.remove(i);
+						}
+					}
+					obj.className = classArr.join(' ');
+				}
+			}
+			
+			//自定义方法
+			//移除指定下标的元素，并返回一个新的数组
+			//不改变原数组
+			Array.prototype.remove = function(index){
+				
+				//截取被删除下标前的元素
+				var arr1 = this.slice(0, index);
+				var arr2 = [];
+				//判断被删除元素是否为最后一个元素
+				if(index != this.length - 1){
+					//截取被删除小标后部分的元素
+					var arr2 = this.slice(index + 1);
+				}
+				var newArr = arr1.concat(arr2);
+//				console.log(newArr);
+				
+				return newArr;
+			}
+		</script>
+	</body>
+</html>
