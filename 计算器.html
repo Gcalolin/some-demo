@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<style>
+			div#cal{
+				border:1px solid black;
+				box-shadow:10px 10px 20px 0px rgba(0, 0, 0, 0.3);
+			}
+			div.cal-top{
+				opacity: 0.1;
+			}
+			div.afterScreen{
+				overflow:hidden;
+				background:rgba(200, 200, 200, 0.3);
+			}
+			/*div.cal-top:nth-of-type(2){
+				margin-bottom:10px;
+			}*/
+			div#nums,
+			div#result{
+				height:100px;
+				line-height:100px;
+				font-size:40px;
+				float:right;
+			}
+			div.cal-top{
+				overflow:hidden;
+			}
+			div.nums div.btn,
+			div.sign div.btn{
+				text-align:center;
+				width:100%;
+				margin-bottom:10px;
+			}
+			
+			div.nums div.btn{
+				line-height:80px;
+				height:80px;		
+				font-size:30px;
+			}
+			div.sign .col-xs-4{
+				height:50px;
+				margin-bottom:10px;
+			}
+			div.sign div.btn{
+				line-height:35px;
+				height:50px;
+			}
+			
+			.choose{
+				background:#F7ECB5 !important;
+			}
+			/*div.nums div.col-xs-4 div.btn{
+				width:80px;
+			}
+			div.nums div.col-xs-8 div.btn{
+			
+			}*/
+		</style>
+	<body>	
+			<div class="container" >
+				
+				<div class="row">
+					<div class="col-md-6 col-sm-8 col-xs-10 col-xs-offset-1 col-sm-offset-2 col-md-offset-3 col-lg-offset-3" id="cal">
+						
+						<div class="row">
+							
+							<div class="afterScreen">
+								
+								<div class="col-xs-12 bg-warning cal-top">
+									<div id="nums"></div>
+								</div>
+									
+								<div class="col-xs-12 bg-info cal-top">
+									<div id="result">0</div>
+								</div>
+							</div>
+							
+							<div class="col-xs-7" style="margin-top:10px;">
+								
+								<div class="row nums" id="nums-container">
+									<div class="col-xs-4">
+										<div class="btn btn-default btn-xs">1</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default btn-xs">2</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default btn-xs">3</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default btn-xs">4</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default btn-xs">5</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default btn-xs">6</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default btn-xs">7</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default btn-xs">8</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default btn-xs">9</div>
+									</div>
+									<div class="col-xs-8">
+										<div class="btn btn-default btn-xs">0</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default btn-xs">.</div>
+									</div>
+								</div>
+								
+							</div>
+							
+							<div class="col-xs-5" style="margin-top:10px;">
+								<div class="row sign" id="signContainer">
+									<div class="col-xs-4">
+										<div class="btn btn-default glyphicon glyphicon-off" id="open"></div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default glyphicon glyphicon-remove-circle" id="close"></div>
+									</div>
+									<div class="col-xs-4">
+										<div id="delete-a-count" class="btn btn-default glyphicon glyphicon-arrow-left"></div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default" id="clear-all">CE</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default" id="clear-result">C</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count" id="negation">±</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count" id="add">+</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count" id="sprt">√</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count" id="pow">x^2</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count" id="sub">-</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count" >1/x</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count">cos</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count">*</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count">sin</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count">tan</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="btn btn-default count">/</div>
+									</div>
+									<div class="col-xs-8">
+										<div class="btn btn-default" id="getNum">=</div>
+									</div>
+									
+							</div>
+							
+						</div>
+						
+						
+						
+					</div>
+				</div>
+				
+			</div>
+		
+		<script src="js/jquery-1.11.3.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/move.js"></script>
+		<script>
+			
+			var results, num2s, signs, currentResult, currentSign;
+			function init(){
+				results = [];
+				num2s = [];
+				signs = [];
+				currentResult = null;
+				currentSign = null;
+			}
+			
+			window.onload = function(){
+				init();
+				var numsContainer = document.getElementById('nums-container');
+				var allNums = numsContainer.getElementsByClassName('btn');
+				var nums = document.getElementById("nums");
+				var result = document.getElementById("result");
+				var deleteACount = document.getElementById("delete-a-count");
+				var clearAll = document.getElementById("clear-all");
+				var clearResult = document.getElementById("clear-result");
+				
+				var signContainer = document.getElementById("signContainer");
+				var allSigns = signContainer.getElementsByClassName('count');
+				var back = document.getElementById("back");//返回上一个结果
+				var forward = document.getElementById("forward");//返回下一个结果
+				var counting = false;
+				
+				
+				console.log(allSigns)
+				
+				//返回上一个结果
+//				back.onclick = function(){
+//					
+//				}
+				
+				//返回下一个结果
+//				forward.onclick = function(){
+//					
+//				}
+
+				//开关
+				var calTop = document.getElementsByClassName('cal-top');
+				console.log(calTop)
+				var openBtn = document.getElementById("open");
+				var closeBtn = document.getElementById("close");
+				openBtn.onclick = function(){
+					move(calTop[0], {'opacity':100});
+					move(calTop[1], {'opacity':100});
+				}
+				closeBtn.onclick = function(){
+					move(calTop[0], {'opacity':0});
+					move(calTop[1], {'opacity':10});
+				}
+				
+				//对数字按钮添加事件
+				for(var i = 0; i < allNums.length; i++){
+					
+					if(i == allNums.length - 1){
+						//对‘.’的设置									
+						allNums[i].onclick = function(){
+							var pattern = /\.{1}/;
+							if(pattern.test(result.innerHTML)){
+								return false;
+							}else{
+								if(result.innerHTML == ''){
+									result.innerHTML = '0';
+								}
+								result.innerHTML += this.innerHTML;
+							}
+						}
+					}else{						
+						allNums[i].onclick = function(){
+							
+							if(result.innerHTML == '0' || !counting){
+								counting = true;
+								result.innerHTML = '';
+							}
+							result.innerHTML += this.innerHTML;
+						}
+					}
+				}
+				
+				//对运算符号添加事件
+				for(var j = 0; j < allSigns.length; j++){
+					allSigns[j].index = j;
+					allSigns[j].onclick = function(){
+						var thisSign = this.innerHTML;
+						var countResult = null;
+						var pattern = /[√]|[±]|[cos]|[tan]|[sin]|^1{1}\/x$|[x^2]/;
+						var num1 = null;
+						if(currentResult == result.innerHTML && currentSign!=this.innerHTML){
+							return false;
+						}
+						//设置样式
+						setChooseStyle(allSigns, this.index);
+						if(pattern.test(this.innerHTML)){
+							result.innerHTML = getResult(result.innerHTML, this.innerHTML);
+							console.log(this.innerHTML);
+						}else{
+							currentSign = this.innerHTML;
+							signs[signs.length] = this.innerHTML;
+							if(results.length == 0){
+								results[0] = result.innerHTML;
+								nums.innerHTML = results[results.length - 1] + ' ' + this.innerHTML;
+							}else{
+								pattern = /\s/;
+								var index = nums.innerHTML.search(pattern);
+								num1 = nums.innerHTML.slice(0, index);
+								console.log(num1);
+								num2s[num2s.length] = result.innerHTML;
+								nums.innerHTML = results[results.length - 1] + ' ' + signs[signs.length - 1] + ' ' + num2s[num2s.length - 1];
+								results[results.length] = getResult(results[results.length - 1], this.innerHTML, num2s[num2s.length - 1]);
+								result.innerHTML = results[results.length - 1];
+							}
+							currentResult = results[results.length - 1];
+							
+						}
+						counting = false;
+					}
+				}
+				
+				//等于号
+				var getNum = document.getElementById("getNum");
+				getNum.onclick = function(){
+					var counts = document.getElementsByClassName('count');
+					console.log(counts);
+					for(var i = 0; i < counts.length; i++){
+						if(counts[i].className.indexOf('choose') != -1){
+							console.log(results[results.length - 1]);
+							console.log(counts[i].innerHTML);
+							console.log(result.innerHTML);
+							var num1 = results[results.length - 1];
+							var sign = counts[i].innerHTML;
+							var num2 = result.innerHTML;
+							var myResult = getResult(num1, sign, num2);
+							result.innerHTML = myResult;
+							nums.innerHTML = num1 + " " + sign + " " + num2;
+						}
+					}
+				}
+				
+				//清空所有
+				clearAll.onclick = function(){
+					result.innerHTML = '0';
+					nums.innerHTML = '';
+				}
+				
+				//清空结果
+				clearResult.onclick =function(){
+					result.innerHTML = '';
+				}
+				
+				//删除一位数
+				deleteACount.onclick = function(){
+					var pattern = /\s{1,}/;
+					if(pattern.test(result.innerHTML)){
+						return false;
+					}else{
+						result.innerHTML = result.innerHTML.slice(0, -1);
+					}
+				}
+				
+				
+				
+			}
+			
+			function getResult(num1, sign, num2){
+				num1 = Number(num1);
+				num2 = Number(num2);
+				console.log(num1);
+				console.log(num2);
+				switch(sign){
+					case '+':
+						result = add(num1, num2);
+					break;
+					case '-':
+						result = sub(num1, num2);
+					break;
+					case '*':
+						result = mul(num1, num2);
+					break;
+					case '/':
+						result = divide(num1, num2);
+					break;
+					case '±':
+						result = negation(num1);
+					break;
+					case '√':
+						result = mySqrt(num1);
+					break;
+					case '1/x':
+						result = backward(num1);
+					break;
+					case 'x^2':
+						result = myPow(num1);
+					break;
+					case 'cos':
+						num1 = getDegByNum(num1);
+						result = getCos(num1);
+					break;
+					case 'sin':
+						num1 = getDegByNum(num1);
+						result = getSin(num1);
+					break;
+					case 'tan':
+						num1 = getDegByNum(num1);
+						result = getTan(num1);
+					break;
+				}
+				console.log();
+				return result;
+				
+			}
+			
+			function add(num1, num2){
+				return num1 + num2;
+			}
+			
+			function sub(num1, num2){
+				return num1 - num2;
+			}
+			
+			function mul(num1, num2){
+				return num1 * num2;
+			}
+			
+			function divide(num1, num2){
+				return num1 / num2;
+			}
+			
+			//取反
+			function negation(num){
+				return -num;
+			}
+			
+			//开根号
+			function mySqrt(num){
+				return Math.sqrt(num);
+			}
+			
+			//平方
+			function myPow(num){
+				return Math.pow(num, 2);
+			}
+			
+			//倒数
+			function backward(num){
+				return 1/num;
+			}
+			
+			//求cos
+			function getCos(num){
+				return Math.round(Math.cos(num) * 10) / 10;
+			}
+			
+			//求sin
+			function getSin(num){
+				return Math.round(Math.sin(num) * 10) / 10;
+			}
+			
+			//tan
+			function getTan(num){
+				return Math.round(Math.tan(num) * 10) / 10;
+			}
+			
+			//通过数字获得角度
+			function getDegByNum(num){
+				return num * Math.PI / 180;
+			}
+			
+			//设置选中时的样式
+			function setChooseStyle(btns, index){
+				console.log(1);
+				for(var i = 0; i < btns.length; i++){
+					if(index == i){
+						console.log(index);
+						addStyle(btns[index], 'choose');
+					}else{
+						console.log(index);
+						removeStyle(btns[i], 'choose');
+					}
+				}
+			}
+	
+			//添加样式
+			function addStyle(obj, className){
+				var clName = obj.getAttribute('class');
+				if(clName == null || clName == ''){
+					obj.className = className;
+				}else if(clName.indexOf(className) == -1){
+					clName += ' ' +  className;
+					obj.className = clName;
+				}
+			}
+			
+			//移除选中的样式
+			function removeStyle(obj, className){
+				var clName = obj.getAttribute('class');
+				if(clName == '' || clName == null){
+					return;
+				}
+				if(clName.indexOf(className) != -1){
+					//存在了在进行比较
+					var classArr = clName.split(' ');
+					//避免不全等值的类出现
+					for(var i = 0; i < classArr.length; i++){
+						if(classArr[i] == className){
+							//避免出现多余空格
+							classArr = classArr.remove(i);
+						}
+					}
+					obj.className = classArr.join(' ');
+				}
+			}
+			
+			//自定义方法
+			//移除指定下标的元素，并返回一个新的数组
+			//不改变原数组
+			Array.prototype.remove = function(index){
+				
+				//截取被删除下标前的元素
+				var arr1 = this.slice(0, index);
+				var arr2 = [];
+				//判断被删除元素是否为最后一个元素
+				if(index != this.length - 1){
+					//截取被删除小标后部分的元素
+					var arr2 = this.slice(index + 1);
+				}
+				var newArr = arr1.concat(arr2);
+//				console.log(newArr);
+				
+				return newArr;
+			}
+			
+			//精确的位数exact
+//			function getExactNum(num, exactCount){
+//				if(exactCount)
+//			}
+		</script>
+	</body>
+</html>
