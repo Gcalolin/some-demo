@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			img{
+				display:block;
+			}
+			ul{
+				list-style:none;
+			}
+			div#container{
+				width:100%;
+				margin:100px auto;
+				padding:50px 10px;
+				box-sizing:border-box;
+			}
+			ul.images{
+				border:1px solid #ccc;
+				border-radius:2px;
+				padding:10px 5px;
+				margin:0 auto;
+				overflow:hidden;
+				position:relative;				
+				box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.2);
+			}
+			ul.images>li{
+				position:relative;
+				float:left;
+				width:24%;
+			}
+			ul.images>li:not(:last-child){
+				margin-right:1.3%;
+			}
+			ul.images>li>img{
+				width:100%;
+			}
+			ul.images>li div.hover{
+				width:100%;	
+				height:100%;
+				position:absolute;
+				background:rgba(0, 0, 0, 0.5);
+				bottom:0;
+				left:0;
+				overflow:hidden;
+			}
+			ul.images>li div.hover>p.title{
+				text-align:center;
+				position:absolute;
+				width:100%;
+				color:#ccc;
+				font-weight:bold;
+				bottom:0;
+				line-height:30px;
+				font-size:18px;
+			}
+			ul.images>li div.hover>p.content{
+				width:100%;
+				color:#aaa;
+				font-weight:bold;
+				font-size:50px;
+				text-align:center;
+				position:absolute;
+				left:0;
+				/*transform:translateY(-50%);*/
+			}
+			
+			
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<ul class="images">
+				<li>
+					<img src="images/6/1.jpg" alt="" />
+					<div class="hover">
+						<p class="title">因为你是周杰伦</p>
+						<p class="content">我才选择表演</p>
+					</div>
+				</li>
+				<li>
+					<img src="images/6/2.jpg" alt="" />
+					<div class="hover">
+						<p class="title">因为你是周杰伦</p>
+						<p class="content">我才选择装逼</p>
+					</div>
+				</li>
+				<li>
+					<img src="images/6/3.jpg" alt="" />
+					<div class="hover">
+						<p class="title">因为你是周杰伦</p>
+						<p class="content">我才选择唱歌</p>
+					</div>
+				</li>
+				<li>
+					<img src="images/6/4.jpg" alt="" />
+					<div class="hover">
+						<p class="title">因为你是周杰伦</p>
+						<p class="content">我还选择装逼</p>
+					</div>
+				</li>
+			</ul>
+			<script src="js/move.js"></script>
+			<script>
+				window.onload = function(){
+					
+					var list = document.getElementsByClassName('images')[0].getElementsByTagName('li');
+					for(var i = 0; i < list.length; i++){
+						var hover = list[i].getElementsByClassName('hover')[0];
+						var title = hover.getElementsByClassName('title')[0];
+						var content = hover.getElementsByClassName('content')[0];
+						var minHeight = title.offsetHeight;
+						var maxHeight = parseInt(getStyle(hover, 'height'));
+						content.style.bottom = (maxHeight - content.offsetHeight)  + 'px';
+						console.log(maxHeight)
+						console.log(minHeight);
+						console.log(content.offsetHeight);
+						
+						hover.minHeight = minHeight;
+						hover.maxHeight = maxHeight;
+						hover.style.height = minHeight + 'px';
+						
+						list[i].onmouseover = function(){
+							var hover = this.getElementsByClassName('hover')[0];
+							move(hover,{height:hover.maxHeight});
+						};
+						
+						list[i].onmouseout = function(){
+							var hover = this.getElementsByClassName('hover')[0];
+							move(hover,{height:hover.minHeight});
+						}
+						
+					}
+				}
+			</script>
+		</div>
+	</body>
+</html>
