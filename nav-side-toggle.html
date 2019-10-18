@@ -1,0 +1,59 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .side-toggle {
+            display: inline-block;
+        }
+
+        .side-toggle:hover>i,
+        .side-toggle:hover::after,
+        .side-toggle:hover::before {
+            width: 20px;
+            background: #409eff;
+        }
+
+        .line {
+            width: 10px;
+            display: block;
+            border-radius: 2px;
+            background: #ccc;
+            height: 3px;
+            transition: width .3s ease;
+        }
+
+        .side-toggle::before {
+            content: '';
+            width: 20px;
+            display: block;
+            border-radius: 2px;
+            background: #ccc;
+            height: 3px;
+            margin: 3px 0;
+        }
+
+        .side-toggle::after {
+            content: '';
+            width: 13px;
+            display: block;
+            border-radius: 2px;
+            background: #ccc;
+            height: 3px;
+            margin: 3px 0;
+            transition: width .3s ease;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="side-toggle">
+        <i class="line"></i>
+    </div>
+</body>
+
+</html>
